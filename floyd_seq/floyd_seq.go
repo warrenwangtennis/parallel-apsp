@@ -2,6 +2,8 @@ package main
 
 import (
 	// "fmt"
+	"flag"
+	"../util"
 )
 
 var n, m int
@@ -16,7 +18,7 @@ func load_adj_mat() [][]int {
 			if i == j {
 				adj_mat[i][j] = 0
 			} else {
-				adj_mat[i][j] = INF
+				adj_mat[i][j] = util.INF
 			}
 		}
 	}
@@ -36,24 +38,27 @@ func solve() {
 		for j := 0; j < n; j++ {
 			apsp[i] = append(apsp[i], adj_mat[i][j])
 		}
-		assert(len(apsp[i]) == n)
+		util.Assert(len(apsp[i]) == n)
 	}
 
 	for k := 0; k < n; k++ {
 		for i := 0; i < n; i++ {
 			for j := 0; j < n; j++ {
-				apsp[i][j] = min(apsp[i][j], apsp[i][k] + apsp[k][j])				
+				apsp[i][j] = util.Min(apsp[i][j], apsp[i][k] + apsp[k][j])				
 			}
 		}
 	}
 }
 
 func main() {
-	n, m, adj = read_input("t2.txt")
+	var input_path string
+	flag.StringVar(&input_path, "i", "", "string-valued path to an input file")
+	flag.Parse()
+	n, m, adj = util.Read_input(input_path)
 
 	load_adj_mat()
 
 	solve()
 
-	write_output("./floyd_seq_out.txt", apsp)
+	util.Write_output("./floyd_seq_out.txt", apsp)
 }
