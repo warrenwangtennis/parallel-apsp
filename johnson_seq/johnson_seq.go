@@ -130,6 +130,11 @@ func solve() {
 
 	if !bellman_ford_plus(n) {
 		//Negative weight cycle, reweigh edges
+		for u := 0; u < n; u++ {
+			for v := range adj[u] {
+				adj[u][v] += dist[u] - dist[v]
+			}
+		}
 	}
 
 	fmt.Println(dist)
