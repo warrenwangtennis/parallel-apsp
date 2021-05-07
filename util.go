@@ -78,7 +78,14 @@ func write_output(output_path string, mat [][]int) {
 	assert(err == nil)
 
 	for i := range mat {
-		fmt.Fprintln(file, mat[i])
+		for j := range mat[i] {
+			if mat[i][j] == INF {
+				fmt.Fprint(file, "X ")
+			} else {
+				fmt.Fprint(file, mat[i][j], " ")
+			}
+		}
+		fmt.Fprintln(file)
 	}
 	file.Close()
 }
