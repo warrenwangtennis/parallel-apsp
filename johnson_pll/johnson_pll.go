@@ -35,13 +35,6 @@ func load_adj_mat() [][]int {
 	return adj_mat
 }
 
-// func insert_node() {
-// 	for u := 0; u < n; u++ {
-// 		adj[u][n] = 0
-// 		adj[n][u] = 0
-// 	}
-// }
-
 func bellman_ford_plus(source int) bool{
 	dist = make([]int, n+1)
 	for i := 0; i < n+1; i++ {
