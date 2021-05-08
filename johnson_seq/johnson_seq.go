@@ -52,39 +52,45 @@ func bellman_ford_plus(source int) bool{
 	}
 	//Calculate shortest distances
 	for index := 0; index < n-1 +1; index++ {
-		for u := 0; u < n; u++ {
-			for v, d := range adj[u] {
-				if dist[v] > dist[u] + d {
-					dist[v] = dist[u] + d
+		for u := 0; u < n+1; u++ {
+			if u != source {
+				for v, d := range adj[u] {
+					if dist[v] > dist[u] + d {
+						dist[v] = dist[u] + d
+					}
+				}
+				//Source node is the last edge for each node
+				// if dist[source] > dist[u] + 0 {
+				// 	dist[source] = dist[u] + 0
+				// }
+			} else {
+				//For source node:
+				for v := 0; v < n; v++ {
+					if dist[v] > dist[u] + 0 {
+						dist[v] = dist[u] + 0
+					}
 				}
 			}
-			//Source node is the last edge for each node
-			if dist[source] > dist[u] + 0 {
-				dist[source] = dist[u] + 0
-			}
 		}
-		//For source node:
-		//for v, d := range adj[n]
-		//this array is all 0
+		
 	}
 	//Report negative weight cycle
-	for u := 0; u < n; u++ {
-		for v, d := range adj[u] {
-			if dist[v] > dist[u] + d {
-				return false
+	for u := 0; u < n+1; u++ {
+		if u != source {
+			for v, d := range adj[u] {
+				if dist[v] > dist[u] + d {
+					return false
+				}
+			}
+		} else {
+			//For source node:
+			for v := 0; v < n; v++ {
+				if dist[v] > dist[source] + 0 {
+					return false
+				}
 			}
 		}
-		if dist[source] > dist[u] + 0 {
-			return false
-		}
 	}
-	//For source node:
-	for v := 0; v < n; v++ {
-		if dist[v] > dist[source] + 0 {
-			return false
-		}
-	}
-
 	return true
 }
 
@@ -130,6 +136,7 @@ func solve() {
 
 	if !bellman_ford_plus(n) {
 		//Negative weight cycle, reweigh edges
+		fmt.Println("Negative weight cycle")
 		for u := 0; u < n; u++ {
 			for v := range adj[u] {
 				adj[u][v] += dist[u] - dist[v]
